@@ -63,13 +63,14 @@ function getLocalUserData() {
 // Save the users' data in the indexedDB
 function saveUserDataLocally(users) {
   if (!('indexedDB' in window)) {return null;}
+  
   return dbPromise.then(db => {
     const tx = db.transaction('users', 'readwrite');
     const store = tx.objectStore('users');
     if(users) {
       /* Clear the users' data before saving the new users' data
          You can omit this line if you are sure that your uniqe 'code' proprty of 
-         each user wont change ever.  
+         each user wont change in future.  
        */
       store.clear();    
       
@@ -83,7 +84,7 @@ function saveUserDataLocally(users) {
 }
 
 /* Load users' data - If we are online get it from the backend, 
- *      and if we are offline use the saved data in the indexedDB 
+ *      otherwise use the saved data in the indexedDB 
  */
  function loadContentNetworkFirst() {
   getUsers()
